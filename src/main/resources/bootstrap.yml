@@ -1,0 +1,35 @@
+server:
+  port: 9005
+
+spring:
+  application:
+    name: ms-api-gateway
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: ms-config-server
+      lable: master
+      profile: prod
+  zipkin:
+    base-url: http://localhost:9007
+    sleuth:
+      sampler:
+        percentage: 1.0
+
+eureka:
+  client:
+    serverUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    appname: ms-api-gateway
+
+hystrix:
+  command:
+    default:
+      execution:
+        iso lation:
+          thread:
+            timeoutInMilliseconds: 30000
